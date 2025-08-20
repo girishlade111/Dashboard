@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lade Studio - Admin Dashboard</title>
+
+    <!-- Preload critical resources for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <!-- Tailwind CSS CDN with performance optimization -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts - Inter with display swap for faster loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Mobile optimization meta tags -->
+    <meta name="theme-color" content="#f18a3d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Skin Color Theme
+                        primary: {
+                            50: '#fef7f0',
+                            100: '#fdeee0',
+                            200: '#fad5b8',
+                            300: '#f7bc8f',
+                            400: '#f4a366',
+                            500: '#f18a3d',
+                            600: '#e67e22',
+                            700: '#d35400',
+                            800: '#a04000',
+                            900: '#6d2c00',
+                        },
+                        skin: {
+                            50: '#fef9f5',
+                            100: '#fdf2e9',
+                            200: '#fae5d3',
+                            300: '#f6d8bd',
+                            400: '#f2cba7',
+                            500: '#eebe91',
+                            600: '#d4a574',
+                            700: '#ba8c57',
+                            800: '#a0733a',
+                            900: '#865a1d',
+                        },
+                        accent: {
+                            50: '#f8f6f4',
+                            100: '#f1ede8',
+                            200: '#e3dbd1',
+                            300: '#d5c9ba',
+                            400: '#c7b7a3',
+                            500: '#b9a58c',
+                            600: '#a08670',
+                            700: '#876754',
+                            800: '#6e4838',
+                            900: '#55291c',
+                        }
+                    },
+                    animation: {
+                        'bounce-gentle': 'bounceGentle 2s infinite',
+                        'pulse-soft': 'pulseSoft 2s infinite',
+                        'slide-in-left': 'slideInLeft 0.5s ease-out',
+                        'slide-in-right': 'slideInRight 0.5s ease-out',
+                        'slide-in-up': 'slideInUp 0.5s ease-out',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        },
+                        pulseSoft: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.8' },
+                        },
+                        slideInLeft: {
+                            '0%': { transform: 'translateX(-100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideInUp: {
+                            '0%': { transform: 'translateY(100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(241, 138, 61, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(241, 138, 61, 0.8)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom scrollbar for modal */
+        .modal-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .modal-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Enhanced Animation classes */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .scale-up {
+            animation: scaleUp 0.3s ease-out;
+        }
+
+        .slide-in-content {
+            animation: slideInContent 0.6s ease-out;
+        }
+
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .interactive-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .interactive-button:hover::before {
+            left: 100%;
+        }
+
+        .pulse-ring {
+            animation: pulseRing 2s infinite;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: loadingDots 1.5s infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes slideInContent {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(0.33);
+                opacity: 1;
+            }
+
+            80%,
+            100% {
+                transform: scale(2.33);
+                opacity: 0;
+            }
+        }
+
+        @keyframes loadingDots {
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60%,
+            100% {
+                content: '...';
+            }
+        }
+
+        /* Toast animation */
+        .toast-enter {
+            animation: toastEnter 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast-exit {
+            animation: toastExit 0.3s ease-in;
+        }
+
+        @keyframes toastEnter {
+            from {
+                opacity: 0;
+                transform: translateX(100%) scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes toastExit {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%) scale(0.8);
+            }
+        }
+
+        /* Skin theme background patterns */
+        .skin-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(238, 190, 145, 0.15) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        .interactive-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(238, 190, 145, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .interactive-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
+            .mobile-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .mobile-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 30;
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            /* Reduce animations on mobile for better performance */
+            .animate-bounce-gentle,
+            .animate-float,
+            .animate-pulse-soft {
+                animation: none;
+            }
+
+            /* Optimize table scrolling on mobile */
+            .mobile-table-container {
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+
+            /* Touch-friendly button sizes */
+            .mobile-touch-target {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* Performance optimizations */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .will-change-transform {
+            will-change: transform;
+        }
+
+        .will-change-opacity {
+            will-change: opacity;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Enhanced hover effects */
+        .hover-scale {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .hover-glow {
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(241, 138, 61, 0.4);
+        }
+
+        .hover-slide {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hover-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease-in-out;
+        }
+
+        .hover-slide:hover::after {
+            left: 100%;
+        }
+
+        /* Loading states */
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Micro-interactions */
+        .micro-bounce {
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .micro-bounce:active {
+            transform: scale(0.95);
+        }
+
+        /* Optimized animations for better performance */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-skin-50 font-inter skin-pattern">
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-btn"
+        class="fixed top-4 left-4 z-50 md:hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale micro-bounce">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+
+    <!-- Main Layout -->
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="w-64 md:w-64 bg-gradient-to-b from-accent-800 to-accent-900 text-skin-100 flex flex-col animate-slide-in-left fixed md:relative z-40 h-full mobile-sidebar will-change-transform">
+            <!-- Logo Area -->
+            <div class="p-6 border-b border-accent-700">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center shadow-lg animate-float hover:animate-bounce-gentle">
+                        <svg class="w-7 h-7 text-white animate-pulse-soft" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                    <div class="animate-slide-in-right">
+                        <h1 class="text-xl font-bold text-white">Lade Studio</h1>
+                        <p class="text-sm text-skin-200">Admin Dashboard</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4">
+                <ul class="space-y-3">
+                    <li class="animate-slide-in-up" style="animation-delay: 0.1s;">
+                        <a href="#" onclick="showPage('products')" id="nav-products"
+                            class="nav-link interactive-button flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 animate-glow">
+                            <svg class="w-5 h-5 animate-bounce-gentle" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                            </svg>
+                            <span class="font-medium">Products</span>
+                        </a>
+                    </li>
+                    <li class="animate-slide-in-up" style="animation-delay: 0.2s;">
+                        <a href="#" onclick="showPage('orders')" id="nav-orders"
+                            class="nav-link interactive-button flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 text-skin-200 hover:bg-accent-700/50 hover:text-white hover:shadow-lg transform hover:scale-105">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                            </svg>
+                            <span class="font-medium">Orders</span>
+                        </a>
+                    </li>
+                    <li class="animate-slide-in-up" style="animation-delay: 0.3s;">
+                        <a href="#" onclick="showPage('customers')" id="nav-customers"
+                            class="nav-link interactive-button flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 text-skin-200 hover:bg-accent-700/50 hover:text-white hover:shadow-lg transform hover:scale-105">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                            <span class="font-medium">Customers</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden md:ml-0 will-change-transform">
+            <!-- Mobile Header -->
+            <div class="md:hidden bg-white shadow-sm border-b border-skin-200 p-4 flex items-center justify-between">
+                <h1 class="text-lg font-semibold text-accent-900">Lade Studio</h1>
+                <div class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-auto p-4 md:p-6 will-change-scroll">
+                <div id="main-content" class="will-change-opacity">
+                    <!-- Content will be dynamically loaded here -->
+                </div>
+
+                <!-- Footer with Copyright -->
+                <footer class="mt-12 pt-8 border-t border-skin-200/50">
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                        <div class="flex items-center space-x-3">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-sm">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-semibold text-accent-800">Lade Studio</h3>
+                                <p class="text-xs text-accent-600">Admin Dashboard</p>
+                            </div>
+                        </div>
+
+                        <div class="text-center md:text-right">
+                            <p class="text-sm text-accent-700 font-medium">
+                                © 2024 Lade Studio. All rights reserved.
+                            </p>
+                            <p class="text-xs text-accent-500 mt-1">
+                                Designed & Developed with ❤️ by Lade Studio Team
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Additional Footer Links -->
+                    <div class="mt-6 pt-4 border-t border-skin-100/50">
+                        <div class="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+                            <div class="flex items-center space-x-6 text-xs text-accent-500">
+                                <span
+                                    class="hover:text-primary-600 transition-colors duration-200 cursor-pointer">Privacy
+                                    Policy</span>
+                                <span class="hover:text-primary-600 transition-colors duration-200 cursor-pointer">Terms
+                                    of Service</span>
+                                <span
+                                    class="hover:text-primary-600 transition-colors duration-200 cursor-pointer">Support</span>
+                            </div>
+                            <div class="text-xs text-accent-500">
+                                Version 1.0.0 • Built with Tailwind CSS & Vanilla JS
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col fade-in scale-up">
+                <!-- Modal Header -->
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 id="modal-title" class="text-xl font-semibold text-gray-900">Add Product</h2>
+                    <button onclick="closeProductModal()"
+                        class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body - Scrollable -->
+                <div class="flex-1 overflow-y-auto modal-scroll px-6 py-4">
+                    <form id="product-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Product ID *</label>
+                                <input type="text" id="productId" name="productId" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                                <div id="productId-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                                <input type="text" id="productName" name="productName" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                                <select id="category" name="category" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                                    <option value="">Select Category</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Home & Garden">Home & Garden</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Books">Books</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Price (₹) *</label>
+                                <input type="number" id="price" name="price" step="1" min="0" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Original Price (₹)</label>
+                                <input type="number" id="originalPrice" name="originalPrice" step="1" min="0"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+                                <input type="text" id="slug" name="slug" readonly
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Image URLs
+                                (comma-separated)</label>
+                            <textarea id="imageUrls" name="imageUrls" rows="2"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea id="description" name="description" rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Specification</label>
+                            <textarea id="specification" name="specification" rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Size</label>
+                                <input type="text" id="size" name="size"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                    placeholder="e.g., S, M, L, XL">
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="isFeatured" name="isFeatured"
+                                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                                <label for="isFeatured" class="ml-2 block text-sm text-gray-900">Featured
+                                    Product</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">AI Hint</label>
+                            <textarea id="aiHint" name="aiHint" rows="2"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Additional context for AI processing"></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button type="button" onclick="closeProductModal()"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200">
+                        Cancel
+                    </button>
+                    <button type="submit" form="product-form"
+                        class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-primary-700 border border-transparent rounded-lg hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200">
+                        <span id="submit-btn-text">Add Product</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md fade-in scale-up">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Delete Product</h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">Are you sure you want to delete this product? This action
+                                cannot be undone.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-xl">
+                    <button type="button" onclick="confirmDelete()"
+                        class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200">
+                        Delete
+                    </button>
+                    <button type="button" onclick="closeDeleteModal()"
+                        class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Demo Data with 18 Products and Delivery Status
+        let products = [
+            {
+                productId: 'PROD001',
+                productName: 'Wireless Bluetooth Headphones',
+                category: 'Electronics',
+                price: 6499,
+                originalPrice: 7999,
+                slug: 'wireless-bluetooth-headphones',
+                imageUrls: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300',
+                description: 'High-quality wireless headphones with noise cancellation',
+                specification: 'Bluetooth 5.0, 30-hour battery life, Active noise cancellation',
+                size: 'One Size',
+                isFeatured: true,
+                aiHint: 'Popular audio device for music lovers',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-15',
+                deliveryDate: '2024-01-18'
+            },
+            {
+                productId: 'PROD002',
+                productName: 'Cotton T-Shirt',
+                category: 'Clothing',
+                price: 1999,
+                originalPrice: 2499,
+                slug: 'cotton-t-shirt',
+                imageUrls: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300',
+                description: 'Comfortable 100% cotton t-shirt in various colors',
+                specification: '100% organic cotton, pre-shrunk, machine washable',
+                size: 'S, M, L, XL',
+                isFeatured: false,
+                aiHint: 'Basic wardrobe essential',
+                deliveryStatus: 'in-progress',
+                orderDate: '2024-02-10',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD003',
+                productName: 'Smart Watch',
+                category: 'Electronics',
+                price: 16499,
+                originalPrice: 19999,
+                slug: 'smart-watch',
+                imageUrls: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300',
+                description: 'Feature-rich smartwatch with health monitoring',
+                specification: 'Heart rate monitor, GPS, 7-day battery, Water resistant',
+                size: '42mm, 46mm',
+                isFeatured: true,
+                aiHint: 'Wearable technology for fitness enthusiasts',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-20',
+                deliveryDate: '2024-01-25'
+            },
+            {
+                productId: 'PROD004',
+                productName: 'Coffee Maker',
+                category: 'Home & Garden',
+                price: 7299,
+                originalPrice: 9999,
+                slug: 'coffee-maker',
+                imageUrls: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300',
+                description: 'Programmable coffee maker with thermal carafe',
+                specification: '12-cup capacity, programmable timer, auto shut-off',
+                size: '12-cup',
+                isFeatured: false,
+                aiHint: 'Kitchen appliance for coffee enthusiasts',
+                deliveryStatus: 'canceled',
+                orderDate: '2024-02-05',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD005',
+                productName: 'Gaming Mouse',
+                category: 'Electronics',
+                price: 2999,
+                originalPrice: 3499,
+                slug: 'gaming-mouse',
+                imageUrls: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300',
+                description: 'High-precision gaming mouse with RGB lighting',
+                specification: '16000 DPI, RGB lighting, 8 programmable buttons',
+                size: 'One Size',
+                isFeatured: false,
+                aiHint: 'Gaming accessory for gamers',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-02-01',
+                deliveryDate: '2024-02-05'
+            },
+            {
+                productId: 'PROD006',
+                productName: 'Yoga Mat',
+                category: 'Sports',
+                price: 1499,
+                originalPrice: 1999,
+                slug: 'yoga-mat',
+                imageUrls: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300',
+                description: 'Premium yoga mat with anti-slip surface',
+                specification: '6mm thickness, eco-friendly material, 183cm length',
+                size: '183cm x 61cm',
+                isFeatured: true,
+                aiHint: 'Fitness equipment for yoga enthusiasts',
+                deliveryStatus: 'in-progress',
+                orderDate: '2024-02-12',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD007',
+                productName: 'Leather Wallet',
+                category: 'Accessories',
+                price: 2499,
+                originalPrice: 2999,
+                slug: 'leather-wallet',
+                imageUrls: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300',
+                description: 'Genuine leather wallet with RFID protection',
+                specification: 'RFID blocking, 8 card slots, coin pocket',
+                size: '11cm x 9cm',
+                isFeatured: false,
+                aiHint: 'Premium leather accessory',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-28',
+                deliveryDate: '2024-02-02'
+            },
+            {
+                productId: 'PROD008',
+                productName: 'Wireless Charger',
+                category: 'Electronics',
+                price: 1799,
+                originalPrice: 2299,
+                slug: 'wireless-charger',
+                imageUrls: 'https://images.unsplash.com/photo-1609592806787-3d9c5d1b3b8e?w=300',
+                description: 'Fast wireless charging pad for smartphones',
+                specification: '15W fast charging, Qi compatible, LED indicator',
+                size: '10cm diameter',
+                isFeatured: false,
+                aiHint: 'Convenient charging solution',
+                deliveryStatus: 'in-progress',
+                orderDate: '2024-02-14',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD009',
+                productName: 'Running Shoes',
+                category: 'Sports',
+                price: 4999,
+                originalPrice: 5999,
+                slug: 'running-shoes',
+                imageUrls: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300',
+                description: 'Lightweight running shoes with cushioned sole',
+                specification: 'Breathable mesh, EVA midsole, rubber outsole',
+                size: '6, 7, 8, 9, 10, 11',
+                isFeatured: true,
+                aiHint: 'Athletic footwear for runners',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-10',
+                deliveryDate: '2024-01-15'
+            },
+            {
+                productId: 'PROD010',
+                productName: 'Desk Lamp',
+                category: 'Home & Garden',
+                price: 3299,
+                originalPrice: 3999,
+                slug: 'desk-lamp',
+                imageUrls: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300',
+                description: 'LED desk lamp with adjustable brightness',
+                specification: 'Touch control, 3 color modes, USB charging port',
+                size: '45cm height',
+                isFeatured: false,
+                aiHint: 'Modern lighting solution',
+                deliveryStatus: 'canceled',
+                orderDate: '2024-02-08',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD011',
+                productName: 'Bluetooth Speaker',
+                category: 'Electronics',
+                price: 3999,
+                originalPrice: 4999,
+                slug: 'bluetooth-speaker',
+                imageUrls: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300',
+                description: 'Portable Bluetooth speaker with deep bass',
+                specification: '360° sound, 12-hour battery, waterproof IPX7',
+                size: '18cm x 7cm',
+                isFeatured: true,
+                aiHint: 'Portable audio entertainment',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-22',
+                deliveryDate: '2024-01-27'
+            },
+            {
+                productId: 'PROD012',
+                productName: 'Backpack',
+                category: 'Accessories',
+                price: 2799,
+                originalPrice: 3299,
+                slug: 'backpack',
+                imageUrls: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300',
+                description: 'Waterproof laptop backpack with USB port',
+                specification: 'Laptop compartment, USB charging port, anti-theft',
+                size: '45cm x 30cm x 15cm',
+                isFeatured: false,
+                aiHint: 'Travel and work essential',
+                deliveryStatus: 'in-progress',
+                orderDate: '2024-02-11',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD013',
+                productName: 'Kitchen Knife Set',
+                category: 'Home & Garden',
+                price: 4499,
+                originalPrice: 5499,
+                slug: 'kitchen-knife-set',
+                imageUrls: 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=300',
+                description: 'Professional kitchen knife set with wooden block',
+                specification: 'Stainless steel, 8-piece set, wooden storage block',
+                size: 'Various sizes',
+                isFeatured: false,
+                aiHint: 'Professional cooking tools',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-30',
+                deliveryDate: '2024-02-04'
+            },
+            {
+                productId: 'PROD014',
+                productName: 'Fitness Tracker',
+                category: 'Electronics',
+                price: 5999,
+                originalPrice: 7499,
+                slug: 'fitness-tracker',
+                imageUrls: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=300',
+                description: 'Advanced fitness tracker with heart rate monitor',
+                specification: 'Heart rate, sleep tracking, 7-day battery, GPS',
+                size: 'Adjustable band',
+                isFeatured: true,
+                aiHint: 'Health and fitness monitoring',
+                deliveryStatus: 'canceled',
+                orderDate: '2024-02-06',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD015',
+                productName: 'Ceramic Mug Set',
+                category: 'Home & Garden',
+                price: 1299,
+                originalPrice: 1599,
+                slug: 'ceramic-mug-set',
+                imageUrls: 'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=300',
+                description: 'Set of 4 ceramic mugs with elegant design',
+                specification: 'Dishwasher safe, 350ml capacity, gift box included',
+                size: '350ml each',
+                isFeatured: false,
+                aiHint: 'Kitchen essentials for beverages',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-02-03',
+                deliveryDate: '2024-02-07'
+            },
+            {
+                productId: 'PROD016',
+                productName: 'Phone Case',
+                category: 'Accessories',
+                price: 899,
+                originalPrice: 1199,
+                slug: 'phone-case',
+                imageUrls: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=300',
+                description: 'Shockproof phone case with card holder',
+                specification: 'Drop protection, card slots, magnetic closure',
+                size: 'Multiple phone models',
+                isFeatured: false,
+                aiHint: 'Phone protection accessory',
+                deliveryStatus: 'in-progress',
+                orderDate: '2024-02-13',
+                deliveryDate: null
+            },
+            {
+                productId: 'PROD017',
+                productName: 'Water Bottle',
+                category: 'Sports',
+                price: 799,
+                originalPrice: 999,
+                slug: 'water-bottle',
+                imageUrls: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=300',
+                description: 'Insulated stainless steel water bottle',
+                specification: 'Double wall insulation, 750ml, leak-proof',
+                size: '750ml',
+                isFeatured: false,
+                aiHint: 'Hydration essential for active lifestyle',
+                deliveryStatus: 'delivered',
+                orderDate: '2024-01-25',
+                deliveryDate: '2024-01-30'
+            },
+            {
+                productId: 'PROD018',
+                productName: 'Tablet Stand',
+                category: 'Electronics',
+                price: 1599,
+                originalPrice: 1999,
+                slug: 'tablet-stand',
+                imageUrls: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300',
+                description: 'Adjustable aluminum tablet stand',
+                specification: 'Multi-angle adjustment, aluminum alloy, foldable',
+                size: 'Fits 4-13 inch devices',
+                isFeatured: false,
+                aiHint: 'Ergonomic device accessory',
+                deliveryStatus: 'canceled',
+                orderDate: '2024-02-09',
+                deliveryDate: null
+            }
+        ];
+
+        let orders = [
+            {
+                orderId: 'ORD001',
+                customerName: 'Arjun Sharma',
+                date: '2024-02-15',
+                total: 13298,
+                status: 'Shipped'
+            },
+            {
+                orderId: 'ORD002',
+                customerName: 'Priya Patel',
+                date: '2024-02-14',
+                total: 6499,
+                status: 'Pending'
+            },
+            {
+                orderId: 'ORD003',
+                customerName: 'Rahul Kumar',
+                date: '2024-02-13',
+                total: 1999,
+                status: 'Canceled'
+            },
+            {
+                orderId: 'ORD004',
+                customerName: 'Sneha Gupta',
+                date: '2024-02-12',
+                total: 23797,
+                status: 'Shipped'
+            }
+        ];
+
+        let customers = [
+            {
+                customerId: 'CUST001',
+                name: 'Arjun Sharma',
+                email: 'arjun.sharma@email.com',
+                totalSpent: 37497,
+                joinDate: '2023-08-15'
+            },
+            {
+                customerId: 'CUST002',
+                name: 'Priya Patel',
+                email: 'priya.patel@email.com',
+                totalSpent: 18998,
+                joinDate: '2023-09-22'
+            },
+            {
+                customerId: 'CUST003',
+                name: 'Rahul Kumar',
+                email: 'rahul.kumar@email.com',
+                totalSpent: 10299,
+                joinDate: '2023-10-05'
+            },
+            {
+                customerId: 'CUST004',
+                name: 'Sneha Gupta',
+                email: 'sneha.gupta@email.com',
+                totalSpent: 64796,
+                joinDate: '2023-07-30'
+            }
+        ];
+
+        // Global variables
+        let currentPage = 'products';
+        let editingProductId = null;
+        let deleteProductId = null;
+
+        // Currency formatting function for Indian Rupees
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Enhanced Profit calculation functions with delivery status
+        function calculateProductProfit(product) {
+            if (product.originalPrice && product.originalPrice > product.price) {
+                return 0; // No profit if original price is higher than current price
+            }
+            return product.originalPrice ? (product.price - product.originalPrice) : product.price * 0.3; // 30% assumed profit margin if no original price
+        }
+
+        function calculateDeliveredProfits() {
+            return products
+                .filter(product => product.deliveryStatus === 'delivered')
+                .reduce((total, product) => total + calculateProductProfit(product), 0);
+        }
+
+        function calculatePendingPayments() {
+            return products
+                .filter(product => product.deliveryStatus === 'in-progress')
+                .reduce((total, product) => total + product.price, 0);
+        }
+
+        function calculateCanceledAmount() {
+            return products
+                .filter(product => product.deliveryStatus === 'canceled')
+                .reduce((total, product) => total + product.price, 0);
+        }
+
+        function getDeliveryStatusCounts() {
+            const statusCounts = {
+                delivered: 0,
+                'in-progress': 0,
+                canceled: 0
+            };
+
+            products.forEach(product => {
+                statusCounts[product.deliveryStatus] = (statusCounts[product.deliveryStatus] || 0) + 1;
+            });
+
+            return statusCounts;
+        }
+
+        function getProfitsByCategory() {
+            const categoryProfits = {};
+            products
+                .filter(product => product.deliveryStatus === 'delivered')
+                .forEach(product => {
+                    const category = product.category;
+                    const profit = calculateProductProfit(product);
+                    categoryProfits[category] = (categoryProfits[category] || 0) + profit;
+                });
+            return categoryProfits;
+        }
+
+        function getMonthlyProfits() {
+            const monthlyData = {};
+            products
+                .filter(product => product.deliveryStatus === 'delivered' && product.deliveryDate)
+                .forEach(product => {
+                    const date = new Date(product.deliveryDate);
+                    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                    const profit = calculateProductProfit(product);
+                    monthlyData[monthKey] = (monthlyData[monthKey] || 0) + profit;
+                });
+
+            // Fill in missing months with 0
+            const months = ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'];
+            months.forEach(month => {
+                if (!monthlyData[month]) {
+                    monthlyData[month] = 0;
+                }
+            });
+
+            return monthlyData;
+        }
+
+        function getTopProfitableProducts() {
+            return products
+                .filter(product => product.deliveryStatus === 'delivered')
+                .map(product => ({
+                    ...product,
+                    profit: calculateProductProfit(product)
+                }))
+                .sort((a, b) => b.profit - a.profit)
+                .slice(0, 5);
+        }
+
+        function getDeliveryStatusBadge(status) {
+            const statusConfig = {
+                'delivered': {
+                    classes: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                    icon: `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>`
+                },
+                'in-progress': {
+                    classes: 'bg-amber-100 text-amber-800 border-amber-200',
+                    icon: `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>`
+                },
+                'canceled': {
+                    classes: 'bg-red-100 text-red-800 border-red-200',
+                    icon: `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>`
+                }
+            };
+
+            const config = statusConfig[status] || {
+                classes: 'bg-gray-100 text-gray-800 border-gray-200',
+                icon: ''
+            };
+
+            return `<span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border ${config.classes}">
+                ${config.icon}${status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')}
+            </span>`;
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function () {
+            showPage('products');
+
+            // Add form submit handler
+            document.getElementById('product-form').addEventListener('submit', handleProductSubmit);
+
+            // Add product name change handler for slug generation
+            document.getElementById('productName').addEventListener('input', generateSlug);
+
+            // Initialize mobile functionality
+            initializeMobileFeatures();
+
+            // Add performance optimizations
+            initializePerformanceOptimizations();
+        });
+
+        // Mobile functionality
+        function initializeMobileFeatures() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+                mobileOverlay.classList.toggle('active');
+
+                // Add haptic feedback on mobile
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            });
+
+            // Close sidebar when clicking overlay
+            mobileOverlay.addEventListener('click', function () {
+                sidebar.classList.remove('open');
+                mobileOverlay.classList.remove('active');
+            });
+
+            // Close sidebar when clicking nav links on mobile
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.remove('open');
+                        mobileOverlay.classList.remove('active');
+                    }
+                });
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 768) {
+                    sidebar.classList.remove('open');
+                    mobileOverlay.classList.remove('active');
+                }
+            });
+
+            // Add touch gestures for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', function (e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            document.addEventListener('touchend', function (e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipeGesture();
+            });
+
+            function handleSwipeGesture() {
+                const swipeThreshold = 100;
+                const swipeDistance = touchEndX - touchStartX;
+
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    if (swipeDistance > 0 && touchStartX < 50) {
+                        // Swipe right from left edge - open sidebar
+                        sidebar.classList.add('open');
+                        mobileOverlay.classList.add('active');
+                    } else if (swipeDistance < 0 && sidebar.classList.contains('open')) {
+                        // Swipe left - close sidebar
+                        sidebar.classList.remove('open');
+                        mobileOverlay.classList.remove('active');
+                    }
+                }
+            }
+        }
+
+        // Performance optimizations
+        function initializePerformanceOptimizations() {
+            // Lazy load animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-slide-in-up');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for lazy animation
+            document.querySelectorAll('.lazy-animate').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Debounce scroll events for better performance
+            let scrollTimeout;
+            window.addEventListener('scroll', function () {
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                scrollTimeout = setTimeout(function () {
+                    // Handle scroll-based animations here
+                }, 100);
+            }, { passive: true });
+
+            // Preload critical images
+            const criticalImages = [
+                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300',
+                'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300'
+            ];
+
+            criticalImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+
+            // Add loading states to buttons
+            document.querySelectorAll('button[type="submit"]').forEach(button => {
+                button.addEventListener('click', function () {
+                    if (this.form && this.form.checkValidity()) {
+                        this.classList.add('loading-dots');
+                        this.disabled = true;
+
+                        setTimeout(() => {
+                            this.classList.remove('loading-dots');
+                            this.disabled = false;
+                        }, 2000);
+                    }
+                });
+            });
+        }
+
+        // Navigation functions with enhanced animations
+        function showPage(page) {
+            currentPage = page;
+
+            // Update navigation active state with animations
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('bg-gradient-to-r', 'from-primary-600', 'to-primary-700', 'text-white', 'shadow-lg', 'animate-glow');
+                link.classList.add('text-skin-200', 'hover:bg-accent-700/50', 'hover:text-white');
+            });
+
+            const activeNav = document.getElementById(`nav-${page}`);
+            activeNav.classList.remove('text-skin-200', 'hover:bg-accent-700/50', 'hover:text-white');
+            activeNav.classList.add('bg-gradient-to-r', 'from-primary-600', 'to-primary-700', 'text-white', 'shadow-lg', 'animate-glow');
+
+            // Add page transition animation
+            const mainContent = document.getElementById('main-content');
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                switch (page) {
+                    case 'products':
+                        mainContent.innerHTML = renderProductsPage();
+                        break;
+                    case 'orders':
+                        mainContent.innerHTML = renderOrdersPage();
+                        break;
+                    case 'customers':
+                        mainContent.innerHTML = renderCustomersPage();
+                        break;
+                }
+
+                // Animate content in
+                mainContent.style.transition = 'all 0.4s ease-out';
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+                mainContent.classList.add('slide-in-content');
+            }, 150);
+        }
+
+        // Profit calculation functions
+        function calculateProductProfit(product) {
+            if (product.originalPrice && product.originalPrice > product.price) {
+                return 0; // No profit if original price is higher than current price
+            }
+            return product.originalPrice ? (product.price - product.originalPrice) : product.price * 0.3; // 30% assumed profit margin if no original price
+        }
+
+        function calculateTotalProfits() {
+            return products.reduce((total, product) => total + calculateProductProfit(product), 0);
+        }
+
+        function getProfitsByCategory() {
+            const categoryProfits = {};
+            products.forEach(product => {
+                const category = product.category;
+                const profit = calculateProductProfit(product);
+                categoryProfits[category] = (categoryProfits[category] || 0) + profit;
+            });
+            return categoryProfits;
+        }
+
+        function getTopProfitableProducts() {
+            return products
+                .map(product => ({
+                    ...product,
+                    profit: calculateProductProfit(product)
+                }))
+                .sort((a, b) => b.profit - a.profit)
+                .slice(0, 5);
+        }
+
+        // Page rendering functions with enhanced animations and skin theme
+        function renderProductsPage() {
+            const totalProfits = calculateTotalProfits();
+            const categoryProfits = getProfitsByCategory();
+            const topProducts = getTopProfitableProducts();
+            const totalProducts = products.length;
+            const featuredProducts = products.filter(p => p.isFeatured).length;
+
+            return `
+                <div class="mb-8 animate-slide-in-up">
+                    <div class="flex justify-between items-center">
+                        <div class="animate-slide-in-left">
+                            <h1 class="text-4xl font-bold text-accent-900 animate-bounce-gentle">Products</h1>
+                            <p class="text-accent-600 mt-2 text-lg">Manage your product inventory & track profits</p>
+                        </div>
+                        <button onclick="openAddProductModal()" class="interactive-button bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-8 py-4 rounded-2xl flex items-center space-x-3 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 animate-slide-in-right animate-glow">
+                            <svg class="w-6 h-6 animate-bounce-gentle" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                            </svg>
+                            <span class="font-semibold text-lg">Add Product</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profit Dashboard -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8 animate-slide-in-up" style="animation-delay: 0.1s;">
+                    <!-- Total Profits Card -->
+                    <div class="lg:col-span-2 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl hover-lift interactive-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold opacity-90">Total Profits</h3>
+                                <p class="text-3xl font-bold mt-2 animate-bounce-gentle">${formatCurrency(totalProfits)}</p>
+                                <p class="text-sm opacity-75 mt-1">From ${totalProducts} products</p>
+                            </div>
+                            <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center animate-float">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Profit Trend Indicator -->
+                        <div class="mt-4 flex items-center space-x-2">
+                            <div class="flex items-center space-x-1 text-sm">
+                                <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                                <span class="opacity-90">+12.5% from last month</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Stats -->
+                    <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-xl hover-lift interactive-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold opacity-90">Total Products</h3>
+                                <p class="text-3xl font-bold mt-2">${totalProducts}</p>
+                                <p class="text-sm opacity-75 mt-1">${featuredProducts} featured</p>
+                            </div>
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Average Profit -->
+                    <div class="bg-gradient-to-br from-skin-400 to-skin-500 rounded-2xl p-6 text-white shadow-xl hover-lift interactive-card">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold opacity-90">Avg. Profit</h3>
+                                <p class="text-3xl font-bold mt-2">${formatCurrency(totalProducts > 0 ? totalProfits / totalProducts : 0)}</p>
+                                <p class="text-sm opacity-75 mt-1">per product</p>
+                            </div>
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profit Analytics -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 animate-slide-in-up" style="animation-delay: 0.2s;">
+                    <!-- Category Profits Chart -->
+                    <div class="bg-gradient-to-br from-white to-skin-50 rounded-2xl shadow-xl ring-1 ring-skin-200/50 p-6 interactive-card hover-lift">
+                        <h3 class="text-xl font-bold text-accent-900 mb-6 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                            </svg>
+                            Profits by Category
+                        </h3>
+                        <div class="space-y-4">
+                            ${Object.entries(categoryProfits).map(([category, profit], index) => {
+                const percentage = totalProfits > 0 ? (profit / totalProfits * 100) : 0;
+                const colors = ['bg-emerald-500', 'bg-primary-500', 'bg-skin-500', 'bg-accent-500', 'bg-blue-500'];
+                const color = colors[index % colors.length];
+                return `
+                                    <div class="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-skin-50 to-transparent hover:from-skin-100 transition-all duration-300">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-4 h-4 ${color} rounded-full animate-pulse-soft"></div>
+                                            <span class="font-medium text-accent-800">${category}</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="font-bold text-accent-900">${formatCurrency(profit)}</div>
+                                            <div class="text-sm text-accent-600">${percentage.toFixed(1)}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-skin-200 rounded-full h-2">
+                                        <div class="${color} h-2 rounded-full transition-all duration-1000 ease-out" style="width: ${percentage}%; animation-delay: ${index * 0.1}s;"></div>
+                                    </div>
+                                `;
+            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Top Profitable Products -->
+                    <div class="bg-gradient-to-br from-white to-skin-50 rounded-2xl shadow-xl ring-1 ring-skin-200/50 p-6 interactive-card hover-lift">
+                        <h3 class="text-xl font-bold text-accent-900 mb-6 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            Top Profitable Products
+                        </h3>
+                        <div class="space-y-3">
+                            ${topProducts.map((product, index) => `
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-skin-50 to-transparent hover:from-primary-50 transition-all duration-300 hover-scale">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                                            ${index + 1}
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-accent-800">${product.productName}</div>
+                                            <div class="text-sm text-accent-600">${product.category}</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-emerald-600">${formatCurrency(product.profit)}</div>
+                                        <div class="text-sm text-accent-600">${formatCurrency(product.price)}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-white to-skin-50 rounded-2xl shadow-xl ring-1 ring-skin-200/50 overflow-hidden interactive-card hover-lift animate-slide-in-up" style="animation-delay: 0.2s;">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-skin-200">
+                            <thead class="bg-gradient-to-r from-skin-100 to-skin-200">
+                                <tr>
+                                    <th class="px-6 py-5 text-left text-xs font-bold text-accent-700 uppercase tracking-wider animate-slide-in-up" style="animation-delay: 0.3s;">Product ID</th>
+                                    <th class="px-6 py-5 text-left text-xs font-bold text-accent-700 uppercase tracking-wider animate-slide-in-up" style="animation-delay: 0.4s;">Product Name</th>
+                                    <th class="px-6 py-5 text-left text-xs font-bold text-accent-700 uppercase tracking-wider animate-slide-in-up" style="animation-delay: 0.5s;">Category</th>
+                                    <th class="px-6 py-5 text-left text-xs font-bold text-accent-700 uppercase tracking-wider animate-slide-in-up" style="animation-delay: 0.6s;">Price</th>
+                                    <th class="px-6 py-5 text-left text-xs font-bold text-accent-700 uppercase tracking-wider animate-slide-in-up" style="animation-delay: 0.7s;">Featured</th>
+                                    <th class="px-6 py-5 text-left text-xs font-bold text-accent-700 uppercase tracking-wider animate-slide-in-up" style="animation-delay: 0.8s;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                ${products.map(product => `
+                                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${product.productId}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.productName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.category}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">${formatCurrency(product.price)}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            ${product.isFeatured ?
+                    '<span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>Featured</span>' :
+                    '<span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800 border border-gray-200">Regular</span>'
+                }
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                            <button onclick="openEditProductModal('${product.productId}')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-primary-700 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                </svg>
+                                                Edit
+                                            </button>
+                                            <button onclick="openDeleteModal('${product.productId}')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-200">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOrdersPage() {
+            return `
+                <div class="mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900">Orders</h1>
+                            <p class="text-gray-600 mt-1">Track and manage customer orders</p>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+                            </svg>
+                            <span>Recent Orders</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm ring-1 ring-slate-900/5 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Customer Name</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                ${orders.map(order => `
+                                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.orderId}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.customerName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.date}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">${formatCurrency(order.total)}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            ${getStatusBadge(order.status)}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCustomersPage() {
+            return `
+                <div class="mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900">Customers</h1>
+                            <p class="text-gray-600 mt-1">Manage customer relationships</p>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+                            </svg>
+                            <span>Customer Database</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm ring-1 ring-slate-900/5 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Customer ID</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Spent</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Join Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                ${customers.map(customer => `
+                                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${customer.customerId}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${customer.name}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${customer.email}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">${formatCurrency(customer.totalSpent)}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${customer.joinDate}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function for status badges with modern design
+        function getStatusBadge(status) {
+            const statusConfig = {
+                'Shipped': {
+                    classes: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                    icon: `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>`
+                },
+                'Pending': {
+                    classes: 'bg-amber-100 text-amber-800 border-amber-200',
+                    icon: `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>`
+                },
+                'Canceled': {
+                    classes: 'bg-red-100 text-red-800 border-red-200',
+                    icon: `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>`
+                }
+            };
+
+            const config = statusConfig[status] || {
+                classes: 'bg-gray-100 text-gray-800 border-gray-200',
+                icon: ''
+            };
+
+            return `<span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border ${config.classes}">
+                ${config.icon}${status}
+            </span>`;
+        }
+
+        // Enhanced Modal functions with animations
+        function openAddProductModal() {
+            editingProductId = null;
+            document.getElementById('modal-title').textContent = 'Add Product';
+            document.getElementById('submit-btn-text').textContent = 'Add Product';
+            document.getElementById('product-form').reset();
+            document.getElementById('productId').readOnly = false;
+            clearFormErrors();
+
+            // Show modal with animation
+            const modal = document.getElementById('product-modal');
+            modal.classList.remove('hidden');
+
+            // Focus on first input for better UX
+            setTimeout(() => {
+                document.getElementById('productId').focus();
+            }, 300);
+
+            // Add haptic feedback on mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        function openEditProductModal(productId) {
+            const product = products.find(p => p.productId === productId);
+            if (!product) return;
+
+            editingProductId = productId;
+            document.getElementById('modal-title').textContent = 'Edit Product';
+            document.getElementById('submit-btn-text').textContent = 'Update Product';
+
+            // Fill form with product data
+            document.getElementById('productId').value = product.productId;
+            document.getElementById('productId').readOnly = true;
+            document.getElementById('productName').value = product.productName;
+            document.getElementById('category').value = product.category;
+            document.getElementById('price').value = product.price;
+            document.getElementById('originalPrice').value = product.originalPrice || '';
+            document.getElementById('slug').value = product.slug;
+            document.getElementById('imageUrls').value = product.imageUrls || '';
+            document.getElementById('description').value = product.description || '';
+            document.getElementById('specification').value = product.specification || '';
+            document.getElementById('size').value = product.size || '';
+            document.getElementById('isFeatured').checked = product.isFeatured;
+            document.getElementById('aiHint').value = product.aiHint || '';
+
+            clearFormErrors();
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+            editingProductId = null;
+        }
+
+        function openDeleteModal(productId) {
+            deleteProductId = productId;
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.add('hidden');
+            deleteProductId = null;
+        }
+
+        function confirmDelete() {
+            if (deleteProductId) {
+                products = products.filter(p => p.productId !== deleteProductId);
+                showToast('Product deleted successfully', 'success');
+                showPage('products'); // Refresh the products page
+                closeDeleteModal();
+            }
+        }
+
+        // Enhanced Form handling with better user feedback
+        function handleProductSubmit(e) {
+            e.preventDefault();
+
+            // Clear any previous errors
+            clearFormErrors();
+
+            // Get submit button for loading state
+            const submitBtn = document.getElementById('submit-btn-text');
+            const submitButton = e.target.querySelector('button[type="submit"]');
+
+            // Show loading state
+            submitBtn.textContent = editingProductId ? 'Updating...' : 'Adding...';
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                try {
+                    const formData = new FormData(e.target);
+                    const productData = {
+                        productId: formData.get('productId').trim(),
+                        productName: formData.get('productName').trim(),
+                        category: formData.get('category'),
+                        price: parseFloat(formData.get('price')),
+                        originalPrice: formData.get('originalPrice') ? parseFloat(formData.get('originalPrice')) : null,
+                        slug: formData.get('slug'),
+                        imageUrls: formData.get('imageUrls').trim(),
+                        description: formData.get('description').trim(),
+                        specification: formData.get('specification').trim(),
+                        size: formData.get('size').trim(),
+                        isFeatured: formData.has('isFeatured'),
+                        aiHint: formData.get('aiHint').trim()
+                    };
+
+                    // Enhanced validation
+                    if (!productData.productId) {
+                        showFormError('productId', 'Product ID is required.');
+                        resetSubmitButton(submitBtn, submitButton);
+                        return;
+                    }
+
+                    if (!productData.productName) {
+                        showFormError('productName', 'Product Name is required.');
+                        resetSubmitButton(submitBtn, submitButton);
+                        return;
+                    }
+
+                    if (!productData.category) {
+                        showFormError('category', 'Category is required.');
+                        resetSubmitButton(submitBtn, submitButton);
+                        return;
+                    }
+
+                    if (!productData.price || productData.price <= 0) {
+                        showFormError('price', 'Please enter a valid price.');
+                        resetSubmitButton(submitBtn, submitButton);
+                        return;
+                    }
+
+                    // Validate product ID uniqueness for new products
+                    if (!editingProductId) {
+                        const existingProduct = products.find(p => p.productId === productData.productId);
+                        if (existingProduct) {
+                            showFormError('productId', 'Product ID already exists. Please use a different ID.');
+                            resetSubmitButton(submitBtn, submitButton);
+                            return;
+                        }
+                    }
+
+                    let successMessage = '';
+                    let isNewProduct = false;
+
+                    if (editingProductId) {
+                        // Update existing product
+                        const index = products.findIndex(p => p.productId === editingProductId);
+                        if (index !== -1) {
+                            products[index] = productData;
+                            successMessage = `Product "${productData.productName}" updated successfully!`;
+                        }
+                    } else {
+                        // Add new product
+                        products.push(productData);
+                        isNewProduct = true;
+                        successMessage = `Product "${productData.productName}" added successfully!`;
+                    }
+
+                    // Show success feedback
+                    showToast(successMessage, 'success');
+
+                    // Add haptic feedback on mobile
+                    if (navigator.vibrate) {
+                        navigator.vibrate([100, 50, 100]);
+                    }
+
+                    // Close modal with animation
+                    closeProductModal();
+
+                    // Refresh products page with smooth transition
+                    setTimeout(() => {
+                        showPage('products');
+
+                        // If it's a new product, highlight it briefly
+                        if (isNewProduct) {
+                            setTimeout(() => {
+                                highlightNewProduct(productData.productId);
+                            }, 500);
+                        }
+                    }, 300);
+
+                } catch (error) {
+                    console.error('Error processing product:', error);
+                    showToast('An error occurred while processing the product. Please try again.', 'error');
+                    resetSubmitButton(submitBtn, submitButton);
+                }
+            }, 800); // Simulate processing time
+        }
+
+        // Helper function to reset submit button state
+        function resetSubmitButton(submitBtn, submitButton) {
+            submitBtn.textContent = editingProductId ? 'Update Product' : 'Add Product';
+            submitButton.disabled = false;
+            submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+
+        // Function to highlight newly added product
+        function highlightNewProduct(productId) {
+            // Find the product row and add highlight animation
+            const productRows = document.querySelectorAll('tbody tr');
+            productRows.forEach(row => {
+                const firstCell = row.querySelector('td');
+                if (firstCell && firstCell.textContent.trim() === productId) {
+                    row.classList.add('bg-primary-50', 'ring-2', 'ring-primary-300', 'animate-pulse-soft');
+
+                    // Remove highlight after 3 seconds
+                    setTimeout(() => {
+                        row.classList.remove('bg-primary-50', 'ring-2', 'ring-primary-300', 'animate-pulse-soft');
+                    }, 3000);
+                }
+            });
+        }
+
+        function generateSlug() {
+            const productName = document.getElementById('productName').value;
+            const slug = productName
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim('-');
+            document.getElementById('slug').value = slug;
+        }
+
+        function showFormError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + '-error');
+
+            field.classList.add('border-red-500');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        function clearFormErrors() {
+            const errorDivs = document.querySelectorAll('[id$="-error"]');
+            errorDivs.forEach(div => {
+                div.classList.add('hidden');
+                div.textContent = '';
+            });
+
+            const fields = document.querySelectorAll('input, select, textarea');
+            fields.forEach(field => {
+                field.classList.remove('border-red-500');
+            });
+        }
+
+        // Enhanced toast notifications with modern design
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const config = {
+                success: {
+                    bgColor: 'bg-emerald-500',
+                    icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>`
+                },
+                error: {
+                    bgColor: 'bg-red-500',
+                    icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>`
+                }
+            };
+
+            const toastConfig = config[type] || config.success;
+
+            toast.className = `${toastConfig.bgColor} text-white px-6 py-4 rounded-xl shadow-lg toast-enter backdrop-blur-sm`;
+            toast.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    ${toastConfig.icon}
+                    <span class="font-medium">${message}</span>
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>
